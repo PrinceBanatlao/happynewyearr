@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy New Year, Lab lab! 🎉</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #4a148c 100%);
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Floating Background Decorations */
+        .floating-heart, .floating-star, .floating-choco {
+            position: fixed;
+            font-size: 2rem;
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-heart {
+            color: #ff69b4;
+            animation-delay: 0s;
+        }
+
+        .floating-star {
+            color: #ffd700;
+            animation-delay: 2s;
+        }
+
+        .floating-choco {
+            color: #8b4513;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-30px) rotate(10deg);
+            }
+        }
+
+        /* Landing Page - Locked Screen */
+        .landing-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #4a148c 100%);
+            z-index: 1000;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .landing-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .new-year-heading {
+            font-size: 4rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 2rem;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 215, 0, 0.5);
+            }
+            to {
+                text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 215, 0, 0.8);
+            }
+        }
+
+        .unlock-btn {
+            padding: 1rem 2.5rem;
+            font-size: 1.2rem;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #4a148c;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+            transition: all 0.3s ease;
+            animation: wiggle 2s ease-in-out infinite;
+        }
+
+        .unlock-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
+        }
+
+        @keyframes wiggle {
+            0%, 100% {
+                transform: rotate(0deg);
+            }
+            25% {
+                transform: rotate(-3deg);
+            }
+            75% {
+                transform: rotate(3deg);
+            }
+        }
+
+        /* Main Content */
+        .main-content {
+            display: none;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .main-content.show {
+            display: block;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Section Styling */
+        .section {
+            margin: 4rem 0;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #ffd700;
+            text-align: center;
+        }
+
+        .section p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        /* Photo Gallery */
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .photo-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            aspect-ratio: 1;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .photo-item:hover {
+            transform: scale(1.05);
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Joke Corner */
+        .joke-corner {
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .joke-btn {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            background: linear-gradient(135deg, #ff6b9d, #c44569);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
+            transition: all 0.3s ease;
+            animation: glow-pulse 2s ease-in-out infinite;
+        }
+
+        .joke-btn:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes glow-pulse {
+            0%, 100% {
+                box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
+            }
+            50% {
+                box-shadow: 0 4px 25px rgba(255, 107, 157, 0.8);
+            }
+        }
+
+        .joke-display {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            font-size: 1.3rem;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        /* Firework Button */
+        .firework-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #4a148c;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+            transition: all 0.3s ease;
+            z-index: 100;
+            animation: wiggle 2s ease-in-out infinite;
+        }
+
+        .firework-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Fireworks */
+        .firework {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .new-year-heading {
+                font-size: 2.5rem;
+            }
+
+            .section h2 {
+                font-size: 2rem;
+            }
+
+            .section p {
+                font-size: 1rem;
+            }
+
+            .photo-gallery {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 1rem;
+            }
+
+            .firework-btn {
+                bottom: 1rem;
+                right: 1rem;
+                padding: 0.8rem 1.2rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .new-year-heading {
+                font-size: 2rem;
+            }
+
+            .unlock-btn {
+                padding: 0.8rem 2rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Decorations -->
+    <div class="floating-heart" style="left: 10%; top: 20%;">❤️</div>
+    <div class="floating-star" style="left: 20%; top: 60%;">⭐</div>
+    <div class="floating-choco" style="left: 80%; top: 30%;">🍫</div>
+    <div class="floating-heart" style="left: 70%; top: 70%;">❤️</div>
+    <div class="floating-star" style="left: 50%; top: 10%;">⭐</div>
+    <div class="floating-choco" style="left: 30%; top: 80%;">🍫</div>
+    <div class="floating-heart" style="left: 90%; top: 50%;">❤️</div>
+    <div class="floating-star" style="left: 15%; top: 40%;">⭐</div>
+    <div class="floating-choco" style="left: 60%; top: 90%;">🍫</div>
+
+    <!-- Landing Screen -->
+    <div class="landing-screen" id="landingScreen">
+        <h1 class="new-year-heading">🎉 Happy New Year! 🎉</h1>
+        <button class="unlock-btn" onclick="unlockMemories()">Click to Open Our 2024-2025 Memories</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Year Review Section -->
+        <section class="section" id="section1">
+            <h2>📅 Isang Taon na Naman</h2>
+            <p>Isang taon na naman ang lumipas, mahalll hehe. Marami tayong hinarap na challenges, mga away at tampuhan, pero sa huli, heto pa rin tayo magkasama at mas lalong nagmamahalan. Salamat dahil hindi ka sumuko sa atin.</p>
+        </section>
+
+        <!-- Photo Gallery -->
+        <section class="section" id="gallerySection">
+            <h2>📸 Our Memories</h2>
+            <div class="photo-gallery" id="photoGallery">
+                <!-- Photos will be dynamically loaded -->
+            </div>
+        </section>
+
+        <!-- Joke Corner -->
+        <section class="section" id="jokeSection">
+            <h2>😄 Joke Corner</h2>
+            <div class="joke-corner">
+                <button class="joke-btn" onclick="showJoke()">Pindutin mo hehe.</button>
+                <div class="joke-display" id="jokeDisplay">
+                    <p>Click the button above para makita ang joke! 😊</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Apology Section -->
+        <section class="section" id="section2">
+            <h2>💜 The Apology</h2>
+            <p>Gusto ko ring magsorry sa lahat ng beses na nasaktan kita dahil sa ugali ko. Alam ko na minsan mahirap ako intindihin, pero nireregret ko lahat ng mali ko. Salamat sa walang sawang pag-unawa at pag-intindi sa akin kahit na minsan ay sumosobra na ako.</p>
+        </section>
+
+        <!-- New Year Wish Section -->
+        <section class="section" id="section3">
+            <h2>🎊 New Year Wish</h2>
+            <p>Happy New Year, lab lab! 🎆 Gusto ko lang malaman mo na ikaw ang pinakamagandang bahagi ng 2025 ko. Ngayong papasok ang bagong taon, asahan mo na mas lalo pa kitang aalagaan, iingatan, at mamahalin ng sobra sobra. Hindi ako mapapagod na ipadama sayo kung gaano ka kahalaga sa akin. Cheers sa mas marami pang memories nating dalawa! Mahal na mahal kita!❤️</p>
+        </section>
+    </div>
+
+    <!-- Firework Button -->
+    <button class="firework-btn" onclick="triggerFireworks()">🎆 Fireworks!</button>
+
+    <script>
+        // Jokes Array
+        const jokes = [
+            "Sabi nila 'Patience is a virtue.' Sabi ko naman, 'Patience is my girlfriend.' Kasi ang haba ng pasensya mo sa ugali ko. I love you!",
+            "Aanhin ko pa ang New Year's Resolution kung ang tanging solution sa kalungkutan ko ay ikaw lang?",
+            "Are you a time traveler? Because I can see you in my future",
+            "Favorite subject mo ba ang Geometry? Kasi kahit saang angle kita tignan, ang ganda mo pa rin!",
+            "Alam mo ba na scientist ako? At ikaw yung LAB ko.",
+            "Ini-SMALL ka ba nila? Wag ka mag-alala inii-BIG naman kita.",
+            "Pustiso ka ba? Kasi I can’t smile without you.",
+            "Crayola ka ba? Kasi nagbibigay ka ng kulay sa buhay ko",
+        ];
+
+        let currentJokeIndex = 0;
+
+        // Unlock Memories Function
+        function unlockMemories() {
+            const landingScreen = document.getElementById('landingScreen');
+            const mainContent = document.getElementById('mainContent');
+            
+            // Create confetti explosion
+            createConfetti();
+            
+            // Hide landing screen and show main content
+            setTimeout(() => {
+                landingScreen.classList.add('hidden');
+                mainContent.classList.add('show');
+                
+                // Load photos
+                loadPhotos();
+                
+                // Animate sections on scroll
+                animateSections();
+            }, 500);
+        }
+
+        // Create Confetti Effect
+        function createConfetti() {
+            const colors = ['#ffd700', '#ff6b9d', '#667eea', '#ffed4e', '#c44569'];
+            const confettiCount = 100;
+
+            for (let i = 0; i < confettiCount; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.top = '-10px';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    document.body.appendChild(confetti);
+
+                    const angle = Math.random() * Math.PI * 2;
+                    const velocity = 2 + Math.random() * 3;
+                    const x = Math.cos(angle) * velocity;
+                    const y = Math.sin(angle) * velocity + 2;
+
+                    let posX = parseFloat(confetti.style.left);
+                    let posY = -10;
+
+                    const animate = () => {
+                        posX += x;
+                        posY += y;
+                        y += 0.1; // gravity
+
+                        confetti.style.left = posX + '%';
+                        confetti.style.top = posY + 'px';
+                        confetti.style.opacity = 1 - (posY / window.innerHeight);
+
+                        if (posY < window.innerHeight) {
+                            requestAnimationFrame(animate);
+                        } else {
+                            confetti.remove();
+                        }
+                    };
+
+                    animate();
+                }, i * 10);
+            }
+        }
+
+        // Load Photos
+        function loadPhotos() {
+            const gallery = document.getElementById('photoGallery');
+            for (let i = 1; i <= 10; i++) {
+                const photoItem = document.createElement('div');
+                photoItem.className = 'photo-item';
+                const img = document.createElement('img');
+                img.src = `pic${i}.jpeg`;
+                img.alt = `Memory ${i}`;
+                img.onerror = function() {
+                    this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="300"%3E%3Crect width="300" height="300" fill="%23764ba2"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="white" font-size="20"%3EMemory ' + i + '%3C/text%3E%3C/svg%3E';
+                };
+                photoItem.appendChild(img);
+                gallery.appendChild(photoItem);
+            }
+        }
+
+        // Show Joke
+        function showJoke() {
+            const jokeDisplay = document.getElementById('jokeDisplay');
+            jokeDisplay.innerHTML = `<p>${jokes[currentJokeIndex]}</p>`;
+            currentJokeIndex = (currentJokeIndex + 1) % jokes.length;
+            
+            // Add sparkle effect
+            createSparkles();
+        }
+
+        // Create Sparkles
+        function createSparkles() {
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.style.position = 'fixed';
+                    sparkle.style.width = '6px';
+                    sparkle.style.height = '6px';
+                    sparkle.style.backgroundColor = '#ffd700';
+                    sparkle.style.borderRadius = '50%';
+                    sparkle.style.pointerEvents = 'none';
+                    sparkle.style.zIndex = '999';
+                    sparkle.style.left = (Math.random() * window.innerWidth) + 'px';
+                    sparkle.style.top = (Math.random() * window.innerHeight) + 'px';
+                    sparkle.style.boxShadow = '0 0 10px #ffd700';
+                    document.body.appendChild(sparkle);
+
+                    setTimeout(() => {
+                        sparkle.style.transition = 'all 0.5s ease-out';
+                        sparkle.style.opacity = '0';
+                        sparkle.style.transform = 'scale(0)';
+                        setTimeout(() => sparkle.remove(), 500);
+                    }, 100);
+                }, i * 50);
+            }
+        }
+
+        // Trigger Fireworks
+        function triggerFireworks() {
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    createFirework();
+                }, i * 300);
+            }
+        }
+
+        // Create Firework
+        function createFirework() {
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * (window.innerHeight * 0.6) + 50;
+            const colors = ['#ffd700', '#ff6b9d', '#667eea', '#ffed4e', '#c44569', '#ffffff'];
+
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'firework';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                document.body.appendChild(particle);
+
+                const angle = (Math.PI * 2 * i) / 30;
+                const velocity = 3 + Math.random() * 2;
+                const vx = Math.cos(angle) * velocity;
+                const vy = Math.sin(angle) * velocity;
+
+                let px = x;
+                let py = y;
+                let opacity = 1;
+
+                const animate = () => {
+                    px += vx;
+                    py += vy;
+                    opacity -= 0.02;
+
+                    particle.style.left = px + 'px';
+                    particle.style.top = py + 'px';
+                    particle.style.opacity = opacity;
+
+                    if (opacity > 0) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        particle.remove();
+                    }
+                };
+
+                animate();
+            }
+        }
+
+        // Animate Sections on Scroll
+        function animateSections() {
+            const sections = document.querySelectorAll('.section');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // Trigger initial animation for first section
+            setTimeout(() => {
+                sections[0].classList.add('visible');
+            }, 100);
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', () => {
+            // Add more floating decorations dynamically
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const types = ['heart', 'star', 'choco'];
+                    const type = types[Math.floor(Math.random() * types.length)];
+                    const decoration = document.createElement('div');
+                    decoration.className = `floating-${type}`;
+                    decoration.style.left = Math.random() * 100 + '%';
+                    decoration.style.top = Math.random() * 100 + '%';
+                    decoration.textContent = type === 'heart' ? '❤️' : type === 'star' ? '⭐' : '🍫';
+                    decoration.style.animationDelay = Math.random() * 6 + 's';
+                    document.body.appendChild(decoration);
+                }, i * 500);
+            }
+        });
+    </script>
+</body>
+</html>
